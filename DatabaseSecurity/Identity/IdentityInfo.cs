@@ -1,5 +1,4 @@
-﻿using DatabaseSecurity.Common;
-using DatabaseSecurity.Info;
+﻿using DatabaseSecurity.Info;
 
 namespace DatabaseSecurity.Identity
 {
@@ -14,7 +13,7 @@ namespace DatabaseSecurity.Identity
 
         public int GetIdentityId()
         {
-            var identityId = (string)_infoSetter.GetValue(IdentityConstants.IdentityId);
+            var identityId = (string)_infoSetter.GetValue("sub");
 
             if (!int.TryParse(identityId, out int result))
                 return 0;
