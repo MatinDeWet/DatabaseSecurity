@@ -130,12 +130,11 @@ More detailed examples can be found in DatabaseSecurity.UnitTests project in the
 
 
 ### The Middleware
-For the Library to work you will need to supply the library with the current identity. Specifically with a IdentityId claim
-- IdentityId = "identity_id"
+For the Library to work you will need to supply the library with the current identity. Specifically with a subjectid(sub) claim
 
 The IdentityConstants Id will be used in the lock.
 ```C#
-    new Claim(IdentityConstants.IdentityId, "1")
+    new Claim("sub", "1")
 ```
 
 You will need to register the middleware, to pass the required data to the library.
