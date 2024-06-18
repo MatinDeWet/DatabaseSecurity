@@ -4,6 +4,32 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Version>1.0.3</Version>
+	<Authors>MatinDeWet</Authors>
+	<Product>DatabaseSecurity</Product>
+	<Description>Database security for .NET, making use of a Repository pattern and Locks</Description>
+	<RepositoryUrl>https://github.com/MatinDeWet/DatabaseSecurity</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/MatinDeWet/DatabaseSecurity</PackageProjectUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<Title>DatabaseSecurity</Title>
   </PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+	</ItemGroup>
 
 </Project>
