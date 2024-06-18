@@ -1,5 +1,4 @@
-﻿using DatabaseSecurity.Common;
-using DatabaseSecurity.Info;
+﻿using DatabaseSecurity.Info;
 using DatabaseSecurity.UnitOfWork;
 using DatabaseSecurity.UnitTests.Models;
 using DatabaseSecurity.UnitTests.Repositories;
@@ -269,7 +268,7 @@ namespace DatabaseSecurity.UnitTests.Tests
         {
             return new List<Claim>
             {
-                new Claim(IdentityConstants.IdentityId, "1"),
+                new Claim("sub", "1"),
             };
         }
 
@@ -277,7 +276,7 @@ namespace DatabaseSecurity.UnitTests.Tests
         {
             return new List<Claim>
             {
-                new Claim(IdentityConstants.IdentityId, "2"),
+                new Claim("sub", "2"),
             };
         }
 
@@ -285,7 +284,7 @@ namespace DatabaseSecurity.UnitTests.Tests
         {
             return new List<Claim>
             {
-                new Claim(IdentityConstants.IdentityId, "3"),
+                new Claim("sub", "3"),
             };
         }
     }
