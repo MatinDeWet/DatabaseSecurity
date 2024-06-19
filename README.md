@@ -89,7 +89,7 @@ They can be implemented as follows:
             _context = context;
         }
 
-        public override IQueryable<Client> Secured(int identityId, DataRightEnum requirement)
+        public override IQueryable<Client> Secured(int identityId, DataPermissionEnum requirement)
         {
             var qry = from c in _context.Clients
                       join ut in _context.UserTeams on c.TeamId equals ut.TeamId
@@ -100,7 +100,7 @@ They can be implemented as follows:
             return qry;
         }
 
-        public override async Task<bool> HasAccess(Client obj, int identityId, DataRightEnum requirement, CancellationToken cancellationToken)
+        public override async Task<bool> HasAccess(Client obj, int identityId, DataPermissionEnum requirement, CancellationToken cancellationToken)
         {
             var teamId = obj.TeamId;
 
@@ -137,8 +137,4 @@ The IdentityConstants Id will be used in the lock.
     new Claim("sub", "1")
 ```
 
-You will need to register the middleware, to pass the required data to the library.
-
-```C#
-    app.UseMiddleware<InfoSetterMiddleware>();
-```
+You will need to pass the user claims through to the IInfoSetter interface and call the SetUser to pass the user claims through, this data is required data to the library.
