@@ -1,6 +1,4 @@
-﻿using DatabaseSecurity.Enums;
-
-namespace DatabaseSecurity.Locks
+﻿namespace DatabaseSecurity.Locks
 {
     public interface IProtected
     {
@@ -10,9 +8,9 @@ namespace DatabaseSecurity.Locks
     public interface IProtected<T> : IProtected where T : class
     {
         //Used for Writes
-        Task<bool> HasAccess(T obj, int identityId, DataPermissionEnum requirement, CancellationToken cancellationToken);
+        Task<bool> HasAccess(T obj, int identityId, CancellationToken cancellationToken);
 
         //Used for Reads
-        IQueryable<T> Secured(int identityId, DataPermissionEnum requirement);
+        IQueryable<T> Secured(int identityId);
     }
 }

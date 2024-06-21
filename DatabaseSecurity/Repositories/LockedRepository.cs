@@ -1,5 +1,4 @@
-﻿using DatabaseSecurity.Enums;
-using DatabaseSecurity.Identity;
+﻿using DatabaseSecurity.Identity;
 using DatabaseSecurity.Locks;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,27 +7,24 @@ namespace DatabaseSecurity.Repositories
     public class LockedRepository<TCtx> : Repository<TCtx>, IRepository where TCtx : DbContext
     {
         private readonly IEnumerable<IProtected> _protection;
-        private readonly DataAccessRequirment _requirement;
         private readonly IIdentityInfo _info;
 
-        public LockedRepository(TCtx context, IIdentityInfo info, DataAccessRequirment requirement, IEnumerable<IProtected> protection) : base(context)
+        public LockedRepository(TCtx context, IIdentityInfo info, IEnumerable<IProtected> protection) : base(context)
         {
             _info = info;
-            _requirement = requirement;
             _protection = protection;
         }
 
         public override IQueryable<T> Set<T>() where T : class
         {
             if (_protection.FirstOrDefault(x => x.IsMatch(typeof(T))) is IProtected<T> entityLock)
-                return entityLock.Secured(_info.GetIdentityId(), _requirement.GetAccessRequirment());
+                return entityLock.Secured(_info.GetIdentityId());
 
             return _context.Set<T>();
         }
 
         public override async Task InsertAsync<T>(T obj, CancellationToken cancellationToken) where T : class
         {
-            _requirement.SetAccessRequirement(DataPermissionEnum.Write);
             var hasAccess = await HasAccess(obj, cancellationToken);
 
             if (!hasAccess)
@@ -45,7 +41,6 @@ namespace DatabaseSecurity.Repositories
 
         public override async Task UpdateAsync<T>(T obj, CancellationToken cancellationToken) where T : class
         {
-            _requirement.SetAccessRequirement(DataPermissionEnum.Write);
             var hasAccess = await HasAccess(obj, cancellationToken);
 
             if (!hasAccess)
@@ -62,7 +57,6 @@ namespace DatabaseSecurity.Repositories
 
         public override async Task DeleteAsync<T>(T obj, CancellationToken cancellationToken) where T : class
         {
-            _requirement.SetAccessRequirement(DataPermissionEnum.Delete);
             var hasAccess = await HasAccess(obj, cancellationToken);
 
             if (!hasAccess)
@@ -83,10 +77,8 @@ namespace DatabaseSecurity.Repositories
 
             if (_protection.FirstOrDefault(x => x.IsMatch(typeof(T))) is IProtected<T> entityLock)
             {
-                result = await entityLock.HasAccess(obj, _info.GetIdentityId(), _requirement.GetAccessRequirment(), cancellationToken);
+                result = await entityLock.HasAccess(obj, _info.GetIdentityId(), cancellationToken);
             }
-
-            _requirement.SetAccessRequirement(DataPermissionEnum.Read);
 
             return result;
         }

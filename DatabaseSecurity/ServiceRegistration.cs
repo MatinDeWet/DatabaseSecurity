@@ -8,8 +8,6 @@ namespace DatabaseSecurity
     {
         public static void RegisterDatabaseSecurity(this IServiceCollection services)
         {
-            services.AddScoped<DataAccessRequirment>();
-
             services.AddScoped<IIdentityInfo, IdentityInfo>();
             services.AddScoped<IInfoSetter, InfoSetter>();
         }

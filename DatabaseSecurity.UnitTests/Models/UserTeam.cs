@@ -1,6 +1,4 @@
-﻿using DatabaseSecurity.Enums;
-
-namespace DatabaseSecurity.UnitTests.Models
+﻿namespace DatabaseSecurity.UnitTests.Models
 {
     public class UserTeam
     {
@@ -9,7 +7,5 @@ namespace DatabaseSecurity.UnitTests.Models
         public int UserId { get; set; }
 
         public int TeamId { get; set; }
-
-        public DataPermissionEnum DataRight { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace DatabaseSecurity.UnitTests.Repositories
 {
     public class ProtectedTestRepository : LockedRepository<TestContext>, IProtectedTestRepository
     {
-        public ProtectedTestRepository(TestContext context, IIdentityInfo info, DataAccessRequirment requirement, IEnumerable<IProtected> protection) : base(context, info, requirement, protection)
+        public ProtectedTestRepository(TestContext context, IIdentityInfo info, IEnumerable<IProtected> protection) : base(context, info, protection)
         {
         }
 

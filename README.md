@@ -89,18 +89,17 @@ They can be implemented as follows:
             _context = context;
         }
 
-        public override IQueryable<Client> Secured(int identityId, DataPermissionEnum requirement)
+        public override IQueryable<Client> Secured(int identityId)
         {
             var qry = from c in _context.Clients
                       join ut in _context.UserTeams on c.TeamId equals ut.TeamId
                       where ut.UserId == identityId
-                      && ut.DataRight.HasFlag(requirement)
                       select c;
 
             return qry;
         }
 
-        public override async Task<bool> HasAccess(Client obj, int identityId, DataPermissionEnum requirement, CancellationToken cancellationToken)
+        public override async Task<bool> HasAccess(Client obj, int identityId, CancellationToken cancellationToken)
         {
             var teamId = obj.TeamId;
 
@@ -111,7 +110,6 @@ They can be implemented as follows:
 
             var query = from ut in _context.UserTeams
                         where ut.UserId == identityId
-                        && ut.DataRight.HasFlag(requirement)
                         && ut.TeamId == teamId
                         select ut.TeamId;
 

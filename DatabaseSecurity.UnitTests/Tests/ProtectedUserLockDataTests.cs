@@ -22,10 +22,10 @@ namespace DatabaseSecurity.UnitTests.Tests
 
         #region GetClient
         [Fact]
-        public async Task GetClient_WithReadPermission_ShouldGetClient()
+        public async Task GetClient_ShouldGetClient()
         {
             // Arrange
-            var userClaims = GetUserWithReadPermission();
+            var userClaims = GetUser();
             _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
 
             var cancellationToken = new CancellationToken();
@@ -36,49 +36,15 @@ namespace DatabaseSecurity.UnitTests.Tests
 
             // Assert
             Assert.NotNull(client);
-        }
-
-        [Fact]
-        public async Task GetClient_WithWritePermission_ShouldGetClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithWritePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 1;
-
-            // Act
-            var client = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-
-            // Assert
-            Assert.NotNull(client);
-        }
-
-        [Fact]
-        public async Task GetClient_WithDeletePermission_ShouldGetClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithDeletePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 1;
-
-            // Act
-            var product = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-
-            // Assert
-            Assert.NotNull(product);
         }
         #endregion
 
         #region InsertClient
         [Fact]
-        public async Task InsertClient_WithReadPermission_ShouldInsertClient()
+        public async Task InsertClient_ShouldInsertClient()
         {
             // Arrange
-            var userClaims = GetUserWithReadPermission();
+            var userClaims = GetUser();
             _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
 
             var cancellationToken = new CancellationToken();
@@ -90,51 +56,7 @@ namespace DatabaseSecurity.UnitTests.Tests
 
             // Act
 
-            Func<Task> act = () => _repository.InsertAsync(client, cancellationToken);
-
-            // Assert
-            await Assert.ThrowsAsync<UnauthorizedAccessException>(act);
-        }
-
-        [Fact]
-        public async Task InsertClient_WithWritePermission_ShouldInsertClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithWritePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var client = new Client
-            {
-                Name = "New Client",
-                TeamId = 1
-            };
-
-            // Act
             await _repository.InsertAsync(client, cancellationToken);
-            await _unitOfWork.SaveAsync(cancellationToken);
-
-            // Assert
-            Assert.NotEqual(0, client.Id);
-        }
-
-        [Fact]
-        public async Task InsertClient_WithDeletePermission_ShouldInsertClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithDeletePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var client = new Client
-            {
-                Name = "New Client",
-                TeamId = 1
-            };
-
-            // Act
-            await _repository.InsertAsync(client, cancellationToken);
-            await _unitOfWork.SaveAsync(cancellationToken);
 
             // Assert
             Assert.NotEqual(0, client.Id);
@@ -143,52 +65,10 @@ namespace DatabaseSecurity.UnitTests.Tests
 
         #region UpdateClient
         [Fact]
-        public async Task UpdateClient_WithReadPermission_ShouldUpdateClient()
+        public async Task UpdateClient_ShouldUpdateClient()
         {
             // Arrange
-            var userClaims = GetUserWithReadPermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 1;
-            var client = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-            var updatedName = "Updated Client";
-
-            // Act
-            client!.Name = updatedName;
-
-            Func<Task> act = () => _repository.UpdateAsync(client, cancellationToken);
-
-            // Assert
-            await Assert.ThrowsAsync<UnauthorizedAccessException>(act);
-        }
-
-        [Fact]
-        public async Task UpdateClient_WithWritePermission_ShouldUpdateClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithWritePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 1;
-            var client = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-            var updatedName = "Updated Client";
-
-            // Act
-            client!.Name = updatedName;
-            await _repository.UpdateAsync(client, cancellationToken);
-            await _unitOfWork.SaveAsync(cancellationToken);
-
-            // Assert
-            Assert.Equal(updatedName, client.Name);
-        }
-
-        [Fact]
-        public async Task UpdateClient_WithDeletePermission_ShouldUpdateClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithDeletePermission();
+            var userClaims = GetUser();
             _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
 
             var cancellationToken = new CancellationToken();
@@ -208,46 +88,10 @@ namespace DatabaseSecurity.UnitTests.Tests
 
         #region DeleteClient
         [Fact]
-        public async Task DeleteClient_WithReadPermission_ShouldDeleteClient()
+        public async Task DeleteClient_ShouldDeleteClient()
         {
             // Arrange
-            var userClaims = GetUserWithReadPermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 2;
-            var client = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-
-            // Act
-            Func<Task> act = () => _repository.DeleteAsync(client!, cancellationToken);
-
-            // Assert
-            await Assert.ThrowsAsync<UnauthorizedAccessException>(act);
-        }
-
-        [Fact]
-        public async Task DeleteClient_WithWritePermission_ShouldDeleteClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithWritePermission();
-            _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
-
-            var cancellationToken = new CancellationToken();
-            var clientId = 2;
-            var client = await _repository.Clients.FirstOrDefaultAsync(p => p.Id == clientId, cancellationToken);
-
-            // Act
-            Func<Task> act = () => _repository.DeleteAsync(client!, cancellationToken);
-
-            // Assert
-            await Assert.ThrowsAsync<UnauthorizedAccessException>(act);
-        }
-
-        [Fact]
-        public async Task DeleteClient_WithDeletePermission_ShouldDeleteClient()
-        {
-            // Arrange
-            var userClaims = GetUserWithDeletePermission();
+            var userClaims = GetUser();
             _infoSetter.SetUser(userClaims.ToDictionary(c => c.Type, c => (object)c.Value));
 
             var cancellationToken = new CancellationToken();
@@ -264,27 +108,11 @@ namespace DatabaseSecurity.UnitTests.Tests
         }
         #endregion
 
-        private ICollection<Claim> GetUserWithReadPermission()
+        private ICollection<Claim> GetUser()
         {
             return new List<Claim>
             {
                 new Claim("sub", "1"),
-            };
-        }
-
-        private ICollection<Claim> GetUserWithWritePermission()
-        {
-            return new List<Claim>
-            {
-                new Claim("sub", "2"),
-            };
-        }
-
-        private ICollection<Claim> GetUserWithDeletePermission()
-        {
-            return new List<Claim>
-            {
-                new Claim("sub", "3"),
             };
         }
     }
